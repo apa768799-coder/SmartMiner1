@@ -8,6 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -43,7 +44,8 @@ public class SmartMinerClient implements ClientModInitializer {
     private static void tick(MinecraftClient client) {
         ClientPlayerEntity player = client.player;
 
-        if (player.getHungerManager().getFoodLevel() < 15 && !player.getMainHandStack().isEmpty() && player.getMainHandStack().getItem().isFood()) {
+        // Исправленная проверка еды для 1.21+
+        if (player.getHungerManager().getFoodLevel() < 15 && !player.getMainHandStack().isEmpty() && player.getMainHandStack().contains(DataComponentTypes.FOOD)) {
             client.interactionManager.interactItem(player, Hand.MAIN_HAND);
             player.swingHand(Hand.MAIN_HAND);
             return;
